@@ -4,24 +4,26 @@
 
 
 {% block content %}
-<form method="post">
-    <h3>Enter the chat room</h3>
+<form method="post"
+    <h3>Join the chat room</h3>
     <div>
-        <label>Name:</label>
         <input type="text" placeholder="Insert name" name="name" value="{{name}}"/>
     </div>
 
     <div class="join">
         <input type="text" placeholder="Room code" name="room_code" value="{{room_code}}"/>
-        <button type="submit" name="join" class="join">Join a room</button>
+        <div class="join-buttons">
+            <button type="submit" name="join-room" class="joined">Join a room</button>
+            <button type="submit" name="create" class="joined">Create a room</button>
+            <button type="submit" name="openpy" class="joined" value="python_room">python</button>
+        </div>    
     </div>
-     <button type="submit" name="create">Create a room</button>
-
     {% if error %}
     <ul>
         <li>{{error}}</li>
     </ul>
-    {% endif %}
-
+    {% endif %}  
 </form>
+
+
 {% endblock %}

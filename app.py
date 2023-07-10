@@ -7,12 +7,13 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "youwontguessthiskey"
 socketio = SocketIO(app)
 rooms = {}
+ROOM_CODE_LENGTH = 11
 
 
-def generate_room_code(code_length):
+def generate_room_code(ROOM_CODE_LENGTH):
     while True:
         code = ""
-        for _ in range(code_length):
+        for _ in range(ROOM_CODE_LENGTH):
             code += random.choice(ascii_uppercase)
             
         if code not in rooms:
@@ -32,21 +33,39 @@ def home():
         room_code = request.form.get("room_code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
+        openpy = request.form.get("openpy", False)
         
-        if not name:
-            return render_template("home.html", error="Please enter a name",name=name, code=room_code) 
-        
-        if join != False and not room_code:
-            return render_template("home.html", error="Please enter a room code",name=name, code=room_code)
-        
-        room = room_code
-        
-        if create != False:
-            room = generate_room_code(5)
+        if openpy != False:
+            print("openpy got clicked on!", openpy)
+            room = generate_room_code(ROOM_CODE_LENGTH)
             rooms[room] = {"members": 0,"messages": []}
             
+            session["room"] = room
+            session["name"] = name
+            
+            return redirect( url_for("python_room"))
+                
+            
+        
+        if not name:
+            return render_template("home.html", error="Please enter a name", name=name, room_code=room_code) 
+        
+        if len(name) <= 2:
+            return render_template("home.html", error="Name must be longer than 2", name=name, room_code=room_code) 
+               
+            
+        if join != False and not room_code:
+            return render_template("home.html", error="Please enter a room code", name=name, room_code=room_code)
+        
+        room = room_code       
+            
+        #create button create new room 
+        if create != False:
+            print("enter from the create button")
+            room = generate_room_code(ROOM_CODE_LENGTH)
+            rooms[room] = {"members": 0,"messages": []}     
         elif room_code not in rooms:
-            return render_template("home.html", error="Rooms does not exist",name=name, code=room_code)
+            return render_template("home.html", error="Rooms does not exist",name=name, room_code=room_code)
                         
         
         session["room"] = room
@@ -66,7 +85,17 @@ def room():
     return render_template("room.html", code=room, messages=rooms[room]["messages"])
 
 
-#sace here messages in SQL
+
+@app.route("/python_room")
+def python_room():
+    room = session.get("room")
+    if room is None or session.get("name") is None or room not in rooms:
+        return redirect(url_for("home"))
+
+    return render_template("python-room.html", code=room, messages=rooms[room]["messages"])
+
+
+#save here messages in SQL
 @socketio.on("message")
 def message(data):
     room = session.get("room")
