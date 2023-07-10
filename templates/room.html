@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Room{% endblock %}
+{% block title %}Secret Room{% endblock %}
 
 {% block content %}
 <div class="message-box">
@@ -12,9 +12,21 @@
         Send</button>
     </div>
   </div>
+
 {% for msg in messages %}
 <script type="text/javascript">
     createMessage("{{msg.name}}", "{{msg.message}}");
+
+    // Retrieve room from session storage
+    const room = sessionStorage.getItem('room');
+        
+    // Emit 'join' event with the stored room
+    socket.emit('join', { "room": room });
+
+    // Store room in session storage
+    sessionStorage.setItem("room", room);
+
 </script>
 {% endfor %}
+
 {% endblock %}

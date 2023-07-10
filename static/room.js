@@ -31,7 +31,7 @@ const sendMessage = () => {
     const message = document.getElementById("user_message")
     if (message.value == "") return;
     socketio.emit("message", {data: message.value})
-    message.value = ""
+    message.value = "";
 };
 
 
@@ -39,6 +39,6 @@ const sendMessage = () => {
 const input = document.getElementById("user_message");
 input.addEventListener("keydown", function(event) {
   if (event.keyCode === 13) {
-    console.log("entered");
+    sendMessage();
   }
 });
