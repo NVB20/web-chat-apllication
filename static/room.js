@@ -36,10 +36,9 @@ const sendMessage = () => {
 
 
 //post message from enter press
-var inputElement = document.getElementById("message");
-inputElement.addEventListener("keydown", function(event) {
+const input = document.getElementById("user_message");
+input.addEventListener("keydown", function(event) {
   if (event.keyCode === 13) {
-     sendIt();
-     event.preventDefault();
+    console.log("entered");
   }
 });

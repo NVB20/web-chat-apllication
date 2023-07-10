@@ -8,7 +8,14 @@ app.config["SECRET_KEY"] = "youwontguessthiskey"
 socketio = SocketIO(app)
 rooms = {}
 ROOM_CODE_LENGTH = 11
-
+#python room
+rooms["SBSOVMQFEJJ"] = {"members": 0, "messages": []}
+#java room
+rooms["JFVRWQHEDRG"] = {"members": 0, "messages": []}
+#devops room
+rooms["HVXNDLUNQFD"] = {"members": 0, "messages": []}
+#java script
+rooms["ETGTUAOWFTS"] = {"memberes": 0, "messages": []}
 
 def generate_room_code(ROOM_CODE_LENGTH):
     while True:
@@ -37,15 +44,14 @@ def home():
         openjava = request.form.get("java", False)
         opendevops = request.form.get("devops", False)
         openjavascript = request.form.get("javascript", False)  
-                       
+                               
                   
         if not name:
             return render_template("home.html", error="Please enter a name", name=name, room_code=room_code) 
         
         if len(name) <= 2:
             return render_template("home.html", error="Name must be longer than 2", name=name, room_code=room_code) 
-               
-            
+                    
         if join != False and not room_code:
             return render_template("home.html", error="Please enter a room code", name=name, room_code=room_code)
         
@@ -53,19 +59,17 @@ def home():
         
         if openpy != False:
             print("openpy got clicked on!", openpy)
-            room = generate_room_code(ROOM_CODE_LENGTH)
-            rooms[room] = {"members": 0,"messages": []}
-            
-            session["room"] = room
+            python_room = "SBSOVMQFEJJ"
+            rooms["SBSOVMQFEJJ"] = {"members": 0,"messages": []}    
+                              
+            session["room"] = "SBSOVMQFEJJ"
             session["name"] = name
-            
+                        
             return redirect( url_for("python_room"))
-        
-              
+            
         if openjava != False:
-            print("openjava got clicked on!", openpy)
-            room = generate_room_code(ROOM_CODE_LENGTH)
-            rooms[room] = {"members": 0,"messages": []}
+            room = "JFVRWQHEDRG"
+            rooms["JFVRWQHEDRG"] = {"members": 0,"messages": []}
             
             session["room"] = room
             session["name"] = name
@@ -73,8 +77,7 @@ def home():
             return redirect( url_for("java_room"))  
         
         if opendevops != False:
-            print("openpy got clicked on!", openpy)
-            room = generate_room_code(ROOM_CODE_LENGTH)
+            room = "HVXNDLUNQFD"
             rooms[room] = {"members": 0,"messages": []}
             
             session["room"] = room
@@ -82,9 +85,7 @@ def home():
             
             return redirect( url_for("devops_room"))   
         
-        
         if openjavascript != False:
-            print("openpy got clicked on!", openpy)
             room = generate_room_code(ROOM_CODE_LENGTH)
             rooms[room] = {"members": 0,"messages": []}
             session["room"] = room
@@ -92,7 +93,6 @@ def home():
             
             return redirect( url_for("javascript_room"))  
               
-            
         #create button create new room 
         if create != False:
             print("enter from the create button")
@@ -183,6 +183,7 @@ def connect(auth):
     send({"name": name, "message": "has enterd the room"}, to=room)
     rooms[room]["members"] += 1
     print(f"{name} joined room {room}")
+   
     
     
 @socketio.on("disconnect")
