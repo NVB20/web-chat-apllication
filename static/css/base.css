@@ -29,6 +29,16 @@ form {
     justify-content: center;
 }
 
+.rooms .join {
+  background-color: green;
+    border-radius: 9px;
+    border-style: none;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 20px;
+    justify-content: center;
+} 
+
 .message-box {
     border-color: black;
     border-width: 2px;

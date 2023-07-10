@@ -34,19 +34,11 @@ def home():
         join = request.form.get("join", False)
         create = request.form.get("create", False)
         openpy = request.form.get("openpy", False)
-        
-        if openpy != False:
-            print("openpy got clicked on!", openpy)
-            room = generate_room_code(ROOM_CODE_LENGTH)
-            rooms[room] = {"members": 0,"messages": []}
-            
-            session["room"] = room
-            session["name"] = name
-            
-            return redirect( url_for("python_room"))
-                
-            
-        
+        openjava = request.form.get("java", False)
+        opendevops = request.form.get("devops", False)
+        openjavascript = request.form.get("javascript", False)  
+                       
+                  
         if not name:
             return render_template("home.html", error="Please enter a name", name=name, room_code=room_code) 
         
@@ -57,7 +49,49 @@ def home():
         if join != False and not room_code:
             return render_template("home.html", error="Please enter a room code", name=name, room_code=room_code)
         
-        room = room_code       
+        room = room_code 
+        
+        if openpy != False:
+            print("openpy got clicked on!", openpy)
+            room = generate_room_code(ROOM_CODE_LENGTH)
+            rooms[room] = {"members": 0,"messages": []}
+            
+            session["room"] = room
+            session["name"] = name
+            
+            return redirect( url_for("python_room"))
+        
+              
+        if openjava != False:
+            print("openjava got clicked on!", openpy)
+            room = generate_room_code(ROOM_CODE_LENGTH)
+            rooms[room] = {"members": 0,"messages": []}
+            
+            session["room"] = room
+            session["name"] = name
+            
+            return redirect( url_for("java_room"))  
+        
+        if opendevops != False:
+            print("openpy got clicked on!", openpy)
+            room = generate_room_code(ROOM_CODE_LENGTH)
+            rooms[room] = {"members": 0,"messages": []}
+            
+            session["room"] = room
+            session["name"] = name
+            
+            return redirect( url_for("devops_room"))   
+        
+        
+        if openjavascript != False:
+            print("openpy got clicked on!", openpy)
+            room = generate_room_code(ROOM_CODE_LENGTH)
+            rooms[room] = {"members": 0,"messages": []}
+            session["room"] = room
+            session["name"] = name
+            
+            return redirect( url_for("javascript_room"))  
+              
             
         #create button create new room 
         if create != False:
@@ -94,6 +128,31 @@ def python_room():
 
     return render_template("python-room.html", code=room, messages=rooms[room]["messages"])
 
+
+@app.route("/java_room")
+def java_room():
+    room = session.get("room")
+    if room is None or session.get("name") is None or room not in rooms:
+        return redirect(url_for("home"))
+
+    return render_template("java-room.html", code=room, messages=rooms[room]["messages"])
+
+
+@app.route("/devops_room")
+def devops_room():
+    room = session.get("room")
+    if room is None or session.get("name") is None or room not in rooms:
+        return redirect(url_for("home"))
+
+    return render_template("devops-room.html", code=room, messages=rooms[room]["messages"])
+
+@app.route("/javascript_room")
+def javascript_room():
+    room = session.get("room")
+    if room is None or session.get("name") is None or room not in rooms:
+        return redirect(url_for("home"))
+
+    return render_template("javascript-room.html", code=room, messages=rooms[room]["messages"])
 
 #save here messages in SQL
 @socketio.on("message")

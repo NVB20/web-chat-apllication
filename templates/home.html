@@ -15,14 +15,19 @@
         <div class="join-buttons">
             <button type="submit" name="join-room" class="joined">Join a room</button>
             <button type="submit" name="create" class="joined">Create a room</button>
-            <button type="submit" name="openpy" class="joined" value="python_room">python</button>
         </div>    
     </div>
     {% if error %}
     <ul>
         <li>{{error}}</li>
     </ul>
-    {% endif %}  
+    {% endif %} 
+    <div class="rooms">
+        <button type="submit" name="openpy" class="join" value="Python">Python</button>
+        <button type="submit" name="java" class="join" value="Java">Java</button>
+        <button type="submit" name="devops" class="join" value="DevOps">DevOps</button>
+        <button type="submit" name="javascript" class="join" value="Java-Script">Java-Script</button>
+    </div>
 </form>
 
 
