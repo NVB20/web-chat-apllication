@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Python Room{% endblock %}
+{% block title %}{{room_type}} Room{% endblock %}
 
 {% block content %}
 <div class="message-box">
-    <h2>Welcome to the Python Room</h2>
+    <h2>Welcome to {{room_type}} Room</h2>
     <div class="messages" id="messages"></div>
     <div class="inputs">
       <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
@@ -12,7 +12,10 @@
         Send</button>
     </div>
   </div>
-{% for msg in messages %}
+<form method="post" action="{{ url_for('home') }}">
+  <button id="leave_room" name="leave_room" style="padding: 10px;">Leave Room</button>
+</form>
+  {% for msg in messages %}
 <script type="text/javascript">
     createMessage("{{msg.name}}", "{{msg.message}}");
 </script>

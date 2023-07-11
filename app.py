@@ -64,7 +64,7 @@ def home():
             python_room = "SBSOVMQFEJJ"
             rooms["SBSOVMQFEJJ"] = {"members": 0,"messages": []}    
                               
-            session["room"] = "SBSOVMQFEJJ"
+            session["room"] = python_room
             session["name"] = name
                         
             return redirect( url_for("python_room"))
@@ -112,6 +112,7 @@ def home():
         
     return render_template("home.html")
 
+
 @app.route("/room")
 def room():
     room = session.get("room")
@@ -121,14 +122,15 @@ def room():
     return render_template("room.html", code=room, messages=rooms[room]["messages"])
 
 
-
 @app.route("/python_room")
 def python_room():
+    openpy = request.form.get("openpy", False)
+    print(openpy)
     room = session.get("room")
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("home"))
 
-    return render_template("python-room.html", code=room, messages=rooms[room]["messages"])
+    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python")
 
 
 @app.route("/java_room")
@@ -148,6 +150,7 @@ def devops_room():
 
     return render_template("devops-room.html", code=room, messages=rooms[room]["messages"])
 
+
 @app.route("/javascript_room")
 def javascript_room():
     room = session.get("room")
@@ -155,6 +158,7 @@ def javascript_room():
         return redirect(url_for("home"))
 
     return render_template("javascript-room.html", code=room, messages=rooms[room]["messages"])
+
 
 #save here messages in SQL
 @socketio.on("message")
@@ -184,15 +188,14 @@ def connect(auth):
     join_room(room)
     send({"name": name, "message": "has enterd the room"}, to=room)
     rooms[room]["members"] += 1
-    print(f"{name} joined room {room}")
-   
-   
-@socketio.on("disconnect")
-def disconnect():
-    room = session.get("room")
-    name = session.get("name")
-    
+    print(f"{name} joined room {room}")  
 
+
+@socketio.on("disconnect")
+def handle_disconnect():
+    room = session.get("room")
+    name = session.get("name", False)
+    
     # Check if disconnection is intentional or due to refresh
     if disconnect_flags.get(request.sid):
         leave_room(room)
@@ -208,7 +211,7 @@ def disconnect():
     else:
         # Set the disconnect flag for this client
         disconnect_flags[request.sid] = True
-    
+       
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
 

@@ -3,12 +3,12 @@ const message = document.getElementById("messages")
 
 const createMessage = (name, msg) => {
     
-    const date = new Date();
+  const date = new Date();
   const minutes = date.getMinutes().toString().padStart(2, '0');
   const hours = date.getHours().toString().padStart(2, '0');
     
     const content = `
-<div class="text">
+<div class="text-message">
     <span>
         <strong>${name}</strong>: ${msg}
     </span>
