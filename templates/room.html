@@ -12,7 +12,9 @@
         Send</button>
     </div>
   </div>
-
+  <form method="post" action="{{ url_for('home') }}">
+    <button id="leave_room" name="leave_room" style="padding: 10px;">Leave Room</button>
+  </form>
 {% for msg in messages %}
 <script type="text/javascript">
     createMessage("{{msg.name}}", "{{msg.message}}");
