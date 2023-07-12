@@ -1,24 +1,17 @@
 from flask import Flask, session, request, redirect, url_for, render_template 
 from flask_socketio import SocketIO, join_room, send, leave_room  
-import random
-from string import ascii_uppercase
-from view import view, rooms
+from view import view
+from room_manager import rooms, SCECRET_KEY
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "youwontguessthiskey"
+app.config["SECRET_KEY"] = SCECRET_KEY
 socketio = SocketIO(app)
 app.register_blueprint(view, url_perfix="")
+
 # Dictionary to track client disconnections
 disconnect_flags = {}
-ROOM_CODE_LENGTH = 10
-#python room
-rooms["SBSOVMQFEJJ"] = {"members": 0, "messages": []}
-#java room
-rooms["JFVRWQHEDRG"] = {"members": 0, "messages": []}
-#devops room
-rooms["HVXNDLUNQFD"] = {"members": 0, "messages": []}
-#java script
-rooms["ETGTUAOWFTS"] = {"memberes": 0, "messages": []}
+
+
 
 
 #save here messages in db

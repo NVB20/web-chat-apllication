@@ -1,24 +1,11 @@
-from flask import Flask, Blueprint, session, request, redirect, url_for, render_template 
-from flask_socketio import SocketIO, join_room, send, leave_room  
-import random
-from string import ascii_uppercase
+from flask import Blueprint, session, request, redirect, url_for, render_template 
 from input_checks.check_name import validate_name
-rooms = {}
+from input_checks.chosen_room import handle_create, handle_openpy
+from room_manager import rooms
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
-ROOM_CODE_LENGTH = 11
 
-def generate_room_code(ROOM_CODE_LENGTH):
-    while True:
-        code = ""
-        for _ in range(ROOM_CODE_LENGTH):
-            code += random.choice(ascii_uppercase)
-            
-        if code not in rooms:
-            break
-        
-    print(code)    
-    return code
+
 
 
 @view.route("/", methods=['POST', 'GET'])
@@ -28,40 +15,29 @@ def home():
     
     if request.method == "POST":
         name = request.form.get("name")
-        join = request.form.get("join", False)
         room_code = request.form.get("room_code")
-        create = request.form.get("create", False)
-        openpy = request.form.get("openpy", False)                              
-          
+        print("pythn", request.form.get("openpy")) 
+        print("craewte" ,request.form.get("create")) 
+              
         error = validate_name()          
         if error:
             return render_template("home.html", error=error, name=name, room_code=room_code)
 
-        if join != False and not room_code:
-            return "Please enter a room code"
+        room = room_code  
+              
+        if request.form.get("openpy"):
+            route = handle_openpy() 
+            print("this is the route: ", route)
+            return redirect(url_for(route))       
+   
+        if request.form.get("create"):
+            route = handle_create()
+            print("this is the route: ", route)
+            return redirect(url_for(route))
 
-        room = room_code 
-        
-        if openpy != False:
-            print("openpy got clicked on!", openpy)
-            python_room = "SBSOVMQFEJJ"
-            rooms["SBSOVMQFEJJ"] = {"members": 0,"messages": []}    
-                              
-            session["room"] = python_room
-            session["name"] = name
-                        
-            return redirect( url_for("views.python_room"))
-              
-              
-        #create button generate new room code
-        if create != False:
-            print("enter from the create button")
-            room = generate_room_code(ROOM_CODE_LENGTH)
-            rooms[room] = {"members": 0,"messages": []}     
-        elif room_code not in rooms:
-            return render_template("home.html", error="Rooms does not exist",name=name , room_code=room_code)
-                        
-        
+        if room_code and room_code not in rooms:
+            return render_template("home.html", error="Room does not exist", name=name, room_code=room_code)  
+                      
         session["room"] = room
         session["name"] = name
         
@@ -70,26 +46,23 @@ def home():
         
     return render_template("home.html")
 
-
-@view.route("/python_room")
-def python_room():
-    openpy = request.form.get("openpy", False)
-    name = session.get("name")
-    room = session.get("room")
-    if room is None or name is None or room not in rooms:
-        return redirect(url_for("views.home"))
-
-    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
-
-
 @view.route("/room")
 def room():
-    openpy = request.form.get("openpy", False)
     name = session.get("name")
     room = session.get("room")
     if room is None or name is None or room not in rooms:
         return redirect(url_for("views.home"))
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"], name=name)
+
+
+@view.route("/python_room")
+def python_room():
+    name = session.get("name")
+    room = session.get("room")
+    if room is None or name is None or room not in rooms:
+        return redirect(url_for("views.home"))
+
+    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
 
 

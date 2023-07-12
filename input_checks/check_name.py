@@ -4,6 +4,8 @@ from flask import request, render_template
 
 def validate_name():
     name = request.form.get("name")    
+    join = request.form.get("join", False)
+    room_code = request.form.get("room_code")
     
     if not name:
         return "Please enter a name"
@@ -16,6 +18,9 @@ def validate_name():
     
     if not contains_symbols(name):
         return "Name cant contain symbols"
+    
+    if join and not room_code:
+            return "Please enter a room code"
                         
     
     return None
