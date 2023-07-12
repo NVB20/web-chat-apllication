@@ -6,8 +6,6 @@ from room_manager import rooms
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
 
 
-
-
 @view.route("/", methods=['POST', 'GET'])
 def home():
     
@@ -26,14 +24,10 @@ def home():
         room = room_code  
               
         if request.form.get("openpy"):
-            route = handle_openpy() 
-            print("this is the route: ", route)
-            return redirect(url_for(route))       
+            return redirect(url_for(handle_openpy() ))       
    
         if request.form.get("create"):
-            route = handle_create()
-            print("this is the route: ", route)
-            return redirect(url_for(route))
+            return redirect(url_for(handle_create()))
 
         if room_code and room_code not in rooms:
             return render_template("home.html", error="Room does not exist", name=name, room_code=room_code)  
@@ -45,6 +39,7 @@ def home():
         
         
     return render_template("home.html")
+
 
 @view.route("/room")
 def room():

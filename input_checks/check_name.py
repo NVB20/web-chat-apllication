@@ -16,15 +16,10 @@ def validate_name():
     if len(name) > 10:
         return "Name cant be longer than 10 charcters"
     
-    if not contains_symbols(name):
-        return "Name cant contain symbols"
+    if not re.match("^[a-zA-Z0-9]+$", name):
+        return "Name can only contain letters and numbers"
     
     if join and not room_code:
             return "Please enter a room code"
-                        
     
     return None
-
-def contains_symbols(name):
-    pattern = r'^[a-zA-Z0-9]+$'
-    return re.match(pattern, name) is not None

@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect, url_for, render_template 
+from flask import Flask, session, request
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
 from room_manager import rooms, SCECRET_KEY
@@ -10,8 +10,6 @@ app.register_blueprint(view, url_perfix="")
 
 # Dictionary to track client disconnections
 disconnect_flags = {}
-
-
 
 
 #save here messages in db
