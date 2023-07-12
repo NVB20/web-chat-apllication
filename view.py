@@ -20,6 +20,7 @@ def generate_room_code(ROOM_CODE_LENGTH):
     return code
 
 
+
 @view.route("/", methods=['POST', 'GET'])
 def home():
     
@@ -30,11 +31,7 @@ def home():
         room_code = request.form.get("room_code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
-        openpy = request.form.get("openpy", False)
-        openjava = request.form.get("java", False)
-        opendevops = request.form.get("devops", False)
-        openjavascript = request.form.get("javascript", False)  
-                               
+        openpy = request.form.get("openpy", False)                              
                   
         if not name:
             return render_template("home.html", error="Please enter a name", name=name, room_code=room_code) 
@@ -55,56 +52,46 @@ def home():
             session["room"] = python_room
             session["name"] = name
                         
-            return redirect( url_for("python_room"))
-            
-        if openjava != False:
-            room = "JFVRWQHEDRG"
-            rooms["JFVRWQHEDRG"] = {"members": 0,"messages": []}
-            
-            session["room"] = room
-            session["name"] = name
-            
-            return redirect( url_for("java_room"))  
-        
-        if opendevops != False:
-            room = "HVXNDLUNQFD"
-            rooms[room] = {"members": 0,"messages": []}
-            
-            session["room"] = room
-            session["name"] = name
-            
-            return redirect( url_for("devops_room"))   
-        
-        if openjavascript != False:
-            room = generate_room_code(ROOM_CODE_LENGTH)
-            rooms[room] = {"members": 0,"messages": []}
-            session["room"] = room
-            session["name"] = name
-            
-            return redirect( url_for("javascript_room"))  
+            return redirect( url_for("views.python_room"))
               
-        #create button create new room 
+              
+        #create button generate new room code
         if create != False:
             print("enter from the create button")
             room = generate_room_code(ROOM_CODE_LENGTH)
             rooms[room] = {"members": 0,"messages": []}     
         elif room_code not in rooms:
-            return render_template("home.html", error="Rooms does not exist",name=name, room_code=room_code)
+            return render_template("home.html", error="Rooms does not exist",name=name , room_code=room_code)
                         
         
         session["room"] = room
         session["name"] = name
         
-        return redirect( url_for("room"))
+        return redirect( url_for("views.room"))
         
         
     return render_template("home.html")
 
 
+@view.route("/python_room")
+def python_room():
+    openpy = request.form.get("openpy", False)
+    name = session.get("name")
+    room = session.get("room")
+    if room is None or name is None or room not in rooms:
+        return redirect(url_for("views.home"))
+
+    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
+
+
 @view.route("/room")
 def room():
+    openpy = request.form.get("openpy", False)
+    name = session.get("name")
     room = session.get("room")
-    if room is None or session.get("name") is None or room not in rooms:
-        return redirect(url_for("home"))
+    if room is None or name is None or room not in rooms:
+        return redirect(url_for("views.home"))
 
-    return render_template("room.html", code=room, messages=rooms[room]["messages"])
+    return render_template("room.html", code=room, messages=rooms[room]["messages"], name=name)
+
+
