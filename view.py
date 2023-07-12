@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, session, request, redirect, url_for, render_
 from flask_socketio import SocketIO, join_room, send, leave_room  
 import random
 from string import ascii_uppercase
+from input_checks.check_name import validate_name
 rooms = {}
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
@@ -20,7 +21,6 @@ def generate_room_code(ROOM_CODE_LENGTH):
     return code
 
 
-
 @view.route("/", methods=['POST', 'GET'])
 def home():
     
@@ -28,20 +28,18 @@ def home():
     
     if request.method == "POST":
         name = request.form.get("name")
-        room_code = request.form.get("room_code")
         join = request.form.get("join", False)
+        room_code = request.form.get("room_code")
         create = request.form.get("create", False)
         openpy = request.form.get("openpy", False)                              
-                  
-        if not name:
-            return render_template("home.html", error="Please enter a name", name=name, room_code=room_code) 
-        
-        if len(name) <= 2:
-            return render_template("home.html", error="Name must be longer than 2", name=name, room_code=room_code) 
-                    
+          
+        error = validate_name()          
+        if error:
+            return render_template("home.html", error=error, name=name, room_code=room_code)
+
         if join != False and not room_code:
-            return render_template("home.html", error="Please enter a room code", name=name, room_code=room_code)
-        
+            return "Please enter a room code"
+
         room = room_code 
         
         if openpy != False:

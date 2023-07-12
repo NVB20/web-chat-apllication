@@ -10,7 +10,7 @@ socketio = SocketIO(app)
 app.register_blueprint(view, url_perfix="")
 # Dictionary to track client disconnections
 disconnect_flags = {}
-ROOM_CODE_LENGTH = 11
+ROOM_CODE_LENGTH = 10
 #python room
 rooms["SBSOVMQFEJJ"] = {"members": 0, "messages": []}
 #java room
@@ -21,11 +21,11 @@ rooms["HVXNDLUNQFD"] = {"members": 0, "messages": []}
 rooms["ETGTUAOWFTS"] = {"memberes": 0, "messages": []}
 
 
-#save here messages in SQL
+#save here messages in db
 @socketio.on("message")
 def message(data):
     room = session.get("room")
-    print("emit emit emit emit emit emit emit emit emit emit  ")
+    
     if room not in rooms:
         return 
     
@@ -54,7 +54,7 @@ def connect(auth):
 
 
 @socketio.on("disconnect")
-def handle_disconnect():
+def disconnect():
     room = session.get("room")
     name = session.get("name", False)
     
