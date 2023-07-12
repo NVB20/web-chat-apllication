@@ -31,6 +31,7 @@ const sendMessage = () => {
     const message = document.getElementById("user_message")
     if (message.value == "") return;
     socketio.emit("message", {data: message.value})
+    setTimeout(scrollChatToBottom, 100);
     message.value = "";
 };
 
@@ -42,3 +43,9 @@ input.addEventListener("keydown", function(event) {
     sendMessage();
   }
 });
+
+
+function scrollChatToBottom() {
+  var chatContainer = document.getElementById("messages");
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}

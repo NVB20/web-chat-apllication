@@ -101,7 +101,7 @@ def home():
             room = generate_room_code(ROOM_CODE_LENGTH)
             rooms[room] = {"members": 0,"messages": []}     
         elif room_code not in rooms:
-            return render_template("home.html", error="Rooms does not exist",name=name, room_code=room_code)
+            return render_template("home.html", error="Rooms does not exist",name=name , room_code=room_code)
                         
         
         session["room"] = room
@@ -116,21 +116,23 @@ def home():
 @app.route("/room")
 def room():
     room = session.get("room")
+    name = session.get("name")
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("home"))
 
-    return render_template("room.html", code=room, messages=rooms[room]["messages"])
+    return render_template("room.html", code=room, messages=rooms[room]["messages"], name=name)
 
 
 @app.route("/python_room")
 def python_room():
     openpy = request.form.get("openpy", False)
     print(openpy)
+    name = session.get("name")
     room = session.get("room")
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("home"))
 
-    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python")
+    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
 
 
 @app.route("/java_room")
@@ -212,7 +214,7 @@ def handle_disconnect():
         # Set the disconnect flag for this client
         disconnect_flags[request.sid] = True
        
-    send({"name": name, "message": "has left the room"}, to=room)
+    send({"name": name, "message": "has left the room"}, to=room, name=name)
     print(f"{name} has left the room {room}")
 
 

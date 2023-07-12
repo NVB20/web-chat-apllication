@@ -3,8 +3,10 @@
 {% block title %}Secret Room{% endblock %}
 
 {% block content %}
+<h1>{{name}}</h1>
 <div class="message-box">
     <h2>Secret Chat Room: {{code}}</h2>
+    
     <div class="messages" id="messages"></div>
     <div class="inputs">
       <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
@@ -12,21 +14,12 @@
         Send</button>
     </div>
   </div>
-  <form method="post" action="{{ url_for('home') }}">
+  <form method="post" action="{{ url_for('home', name=name) }}">
     <button id="leave_room" name="leave_room" style="padding: 10px;">Leave Room</button>
   </form>
 {% for msg in messages %}
 <script type="text/javascript">
     createMessage("{{msg.name}}", "{{msg.message}}");
-
-    // Retrieve room from session storage
-    const room = sessionStorage.getItem('room');
-        
-    // Emit 'join' event with the stored room
-    socket.emit('join', { "room": room });
-
-    // Store room in session storage
-    sessionStorage.setItem("room", room);
 
 </script>
 {% endfor %}

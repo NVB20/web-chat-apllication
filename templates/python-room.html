@@ -3,6 +3,7 @@
 {% block title %}{{room_type}} Room{% endblock %}
 
 {% block content %}
+<h1>{{name}}</h1>
 <div class="message-box">
     <h2>Welcome to {{room_type}} Room</h2>
     <div class="messages" id="messages"></div>
@@ -12,7 +13,7 @@
         Send</button>
     </div>
   </div>
-<form method="post" action="{{ url_for('home') }}">
+<form method="post" action="{{ url_for('home', name=name) }}">
   <button id="leave_room" name="leave_room" style="padding: 10px;">Leave Room</button>
 </form>
   {% for msg in messages %}

@@ -7,11 +7,11 @@
 <form method="post">
     <h3>Join the chat room</h3>
     <div>
-        <input type="text" placeholder="Insert name" name="name" value="{{name}}"/>
+        <input type="text" placeholder="Insert name" name="name" value="{{ request.args.get('name'  ) }}"/>
     </div>
 
     <div class="join">
-        <input type="text" placeholder="Room code" name="room_code" value="{{room_code}}"/>
+        <input type="text" placeholder="Room code" name="room_code" value="{{room_code or '' }}"/>
         <div class="join-buttons">
             <button type="submit" name="join-room" class="joined">Join a room</button>
             <button type="submit" name="create" class="joined">Create a room</button>
