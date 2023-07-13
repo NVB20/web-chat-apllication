@@ -35,13 +35,5 @@ def create_collection(room_code):
 
 def delete_collection(room_code):
     collection_name = f"{room_code}_room_messages"
+    print("deleted room: ", room_code)
     message_db[collection_name].drop()
-
-
-def delete_empty_rooms_collections(room_code):
-    room = room_code
-    if room in rooms:
-        rooms[room]['members'] -= 1
-        if rooms[room]['members'] <= 0:
-            del rooms[room]
-            delete_collection(room)

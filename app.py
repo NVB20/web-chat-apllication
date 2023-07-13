@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, join_room, send, leave_room
 from view import view
 from room_manager import rooms, SCECRET_KEY
 from mongo import insert_messages, delete_collection
+from handle_time import time_now
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SCECRET_KEY
@@ -22,7 +23,9 @@ def message(data):
         return 
     
     content = {"name": session.get("name"), 
-               "message": data["data"]}
+               "message": data["data"],
+               "time": time_now()
+               }
     send(content, to=room)
     rooms[room]["messages"].append(content)
     
@@ -51,7 +54,9 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name", False)
+    
     print("socket emitted here")
+    
     if room in rooms:
         rooms[room]['members'] -= 1
         if rooms[room]['members'] <= 0:
@@ -65,3 +70,6 @@ def disconnect():
 
 if __name__ == "__main__":
     socketio.run(app=app, debug=True)
+    
+        
+    
