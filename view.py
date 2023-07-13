@@ -2,6 +2,7 @@ from flask import Blueprint, session, request, redirect, url_for, render_templat
 from input_checks.check_name import validate_name
 from input_checks.chosen_room import handle_create, handle_openpy
 from room_manager import rooms
+from mongo import delete_empty_rooms_collections
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
 
@@ -14,8 +15,6 @@ def home():
     if request.method == "POST":
         name = request.form.get("name")
         room_code = request.form.get("room_code")
-        print("pythn", request.form.get("openpy")) 
-        print("craewte" ,request.form.get("create")) 
               
         error = validate_name()          
         if error:
@@ -59,5 +58,4 @@ def python_room():
         return redirect(url_for("views.home"))
 
     return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
-
 

@@ -2,6 +2,7 @@ from flask import Flask, session, request
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
 from room_manager import rooms, SCECRET_KEY
+from mongo import insert_messages, delete_collection
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SCECRET_KEY
@@ -24,6 +25,8 @@ def message(data):
                "message": data["data"]}
     send(content, to=room)
     rooms[room]["messages"].append(content)
+    
+    insert_messages(content, room)
     print(f"{session.get('name')} said: {data['data']}")
 
 
@@ -48,23 +51,14 @@ def connect(auth):
 def disconnect():
     room = session.get("room")
     name = session.get("name", False)
+    print("socket emitted here")
+    if room in rooms:
+        rooms[room]['members'] -= 1
+        if rooms[room]['members'] <= 0:
+            del rooms[room]
+            delete_collection(room)
+            print("delted room from lists")
     
-    # Check if disconnection is intentional or due to refresh
-    if disconnect_flags.get(request.sid):
-        leave_room(room)
-
-        if room in rooms:
-            rooms[room]['members'] -= 1
-            if rooms[room]['members'] <= 0:
-                del rooms[room]
-                
-        
-        # Remove the disconnect flag for this client
-        del disconnect_flags[request.sid]
-    else:
-        # Set the disconnect flag for this client
-        disconnect_flags[request.sid] = True
-       
     send({"name": name, "message": "has left the room"}, to=room, name=name)
     print(f"{name} has left the room {room}")
 

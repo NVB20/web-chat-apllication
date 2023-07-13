@@ -49,3 +49,9 @@ function scrollChatToBottom() {
   var chatContainer = document.getElementById("messages");
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
+const leave_button = document.getElementById("leave_room");
+leave_button.addEventListener("click", function() {
+  console.log("Button pressed!");
+  socketio.emit("disconnect")
+});

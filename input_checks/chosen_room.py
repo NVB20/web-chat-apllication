@@ -1,6 +1,6 @@
 from flask import request, session
 from room_manager import rooms, ROOM_CODE_LENGTH, generate_room_code
-
+from mongo import create_collection
 
 def handle_openpy():
     print("openpy got clicked on!")
@@ -12,6 +12,8 @@ def handle_openpy():
     session["room"] = python_room
     session["name"] = name
 
+    create_collection(python_room)
+    
     return "views.python_room"
 
 
@@ -24,5 +26,7 @@ def handle_create():
     
     session["room"] = room
     session["name"] = name
-
+    
+    create_collection(room)
+    
     return "views.room"
