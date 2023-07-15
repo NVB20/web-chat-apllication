@@ -1,8 +1,9 @@
 from dotenv import load_dotenv, find_dotenv
 from pymongo import MongoClient
+from flask import jsonify
 import os
-from room_manager import rooms
-import pprint
+import re
+
 
 
 load_dotenv(find_dotenv())
@@ -20,7 +21,7 @@ print(collections)
 
 
 
-def insert_messages(message, room):
+def insert_messages_to_mongo(message, room):
     insert_collection = f"{room}_room_messages"
     collection = message_db[insert_collection]
     test_message = message
@@ -37,3 +38,22 @@ def delete_collection(room_code):
     collection_name = f"{room_code}_room_messages"
     print("deleted room: ", room_code)
     message_db[collection_name].drop()
+
+
+def retrive_message_history(room_code):
+    collection_name = f"{room_code}_room_messages"
+    cursor = message_db[collection_name].find()
+    
+    message_list = []
+    
+    for document in cursor:
+        name = document['name']
+        content = document['message']
+        timestamp = document['time']
+        
+        pattern = '(\d{2}:\d{2})'
+        time = re.match(pattern, timestamp).group(1)
+        
+        message_list.append((name, content, time))      
+    
+    return jsonify(message_list)

@@ -1,30 +1,10 @@
 var socketio = io();
 const message = document.getElementById("messages")
 
-const createMessage = (name, msg) => {
-    
-  const date = new Date();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const hours = date.getHours().toString().padStart(2, '0');
-    
-    const content = `
-<div class="text-message">
-    <span>
-        <strong>${name}</strong>: ${msg}
-    </span>
-    <span class="muted">`+
-        hours + ":" + minutes
-    +`</span>
-</div>
-`;
-    
-    message.innerHTML += content;
-};
 
 socketio.on("message", (data) => {
-createMessage(data.name, data.message);
+createMessage(data.name, data.message, data.time);
 });
-
 
 
 const sendMessage = () => {
@@ -36,7 +16,6 @@ const sendMessage = () => {
 };
 
 
-//post message from enter press
 const input = document.getElementById("user_message");
 input.addEventListener("keydown", function(event) {
   if (event.keyCode === 13) {
@@ -50,8 +29,49 @@ function scrollChatToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+
 const leave_button = document.getElementById("leave_room");
 leave_button.addEventListener("click", function() {
   console.log("Button pressed!");
   socketio.emit("disconnect")
 });
+
+
+async function load_messages() {
+  return await fetch("/get_messages")
+    .then(async function (response) {
+      return await response.json();
+    })
+    .then(function (text) {
+      console.log(text);
+      return text;
+    });
+}
+
+
+window.onload = async function () {
+  var msgs = await load_messages();
+  for (i = 0; i < msgs.length; i++) {
+    const name = msgs[i][0];  
+    const message = msgs[i][1];
+    const time = msgs[i][2];
+    createMessage(name, message, time);
+  };
+};
+
+
+const createMessage = (name, msg, time) => {
+    
+    const content = `
+      <div class="text-message">
+          <span>
+              <strong>${name}</strong>: ${msg}
+          </span>
+          <span class="muted">
+              ${time}
+          </span>
+      </div>
+      `;
+    
+    message.innerHTML += content;
+};

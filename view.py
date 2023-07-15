@@ -2,6 +2,7 @@ from flask import Blueprint, session, request, redirect, url_for, render_templat
 from input_checks.check_name import validate_name
 from input_checks.chosen_room import handle_create, handle_openpy
 from room_manager import rooms
+from mongo import retrive_message_history
 
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
@@ -59,3 +60,8 @@ def python_room():
 
     return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
 
+
+@view.route("/get_messages")
+def get_messages():
+    all_messages = retrive_message_history(session["room"])
+    return all_messages

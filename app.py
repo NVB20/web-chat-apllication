@@ -1,8 +1,8 @@
-from flask import Flask, session, request
+from flask import Flask, session
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
 from room_manager import rooms, SCECRET_KEY
-from mongo import insert_messages, delete_collection
+from mongo import insert_messages_to_mongo, delete_collection, retrive_message_history
 from handle_time import time_now
 
 app = Flask(__name__)
@@ -14,7 +14,6 @@ app.register_blueprint(view, url_perfix="")
 disconnect_flags = {}
 
 
-#save here messages in db
 @socketio.on("message")
 def message(data):
     room = session.get("room")
@@ -29,14 +28,17 @@ def message(data):
     send(content, to=room)
     rooms[room]["messages"].append(content)
     
-    insert_messages(content, room)
-    print(f"{session.get('name')} said: {data['data']}")
+    insert_messages_to_mongo(content, room)
+    
+    time = time_now()
+    print(f"{session.get('name')} said: {data['data']} at: {time}")
 
 
 @socketio.on("connect") 
 def connect(auth):
     room = session.get("room")
     name = session.get("name")
+    time = time_now()
     
     if not room or not name:
         return
@@ -45,15 +47,16 @@ def connect(auth):
         return
     
     join_room(room)
-    send({"name": name, "message": "has enterd the room"}, to=room)
+    send({"name": name, "message": "has enterd the room", "time": time}, to=room)
     rooms[room]["members"] += 1
-    print(f"{name} joined room {room}")  
+    print(f"{name} joined room {room} {time}")  
 
 
 @socketio.on("disconnect")
 def disconnect():
     room = session.get("room")
     name = session.get("name", False)
+    time = time_now()
     
     print("socket emitted here")
     
@@ -64,8 +67,8 @@ def disconnect():
             delete_collection(room)
             print("delted room from lists")
     
-    send({"name": name, "message": "has left the room"}, to=room, name=name)
-    print(f"{name} has left the room {room}")
+    send({"name": name, "message": "has left the room", "time": time}, to=room, name=name)
+    print(f"{name} has left the room {room} {time}")
 
 
 if __name__ == "__main__":
