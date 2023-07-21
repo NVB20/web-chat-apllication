@@ -1,43 +1,63 @@
-form {
-    background-color: white;
+.home-container {
+    background-color: #021D3A;
     padding: 20px;
     border-radius: 20px;
-    justify-content: center;
-    align-items: center;
+    border-color: #FFD60A;
+    border-style: solid;
+    text-align: center;
+    width: 410px;
+    height: 310px;
+  }
+
+  .welcome-head {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 38px;
+  }
+
+  .home-container .home-input {
+    background-color: transparent;
+    border-style: solid;
+    border-color: #FFD60A;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 355px;
   }
   
-  .join .join-buttons {
-    background-color: white
-  }
   .join .join-buttons .joined {
-      background-color: green;
-      border-radius: 9px;
-      border-style: none;
-      padding: 10px;
-      margin-top: 5px;
-      font-size: 20px;
-      justify-content: center;
+    background-color: #FFD60A;
+    border-radius: 9px;
+    border-style: none;
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    width: 180px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .rooms .join {
-    background-color: green;
-      border-radius: 9px;
-      border-style: none;
-      padding: 10px;
-      margin-top: 5px;
-      font-size: 20px;
-      justify-content: center;
+    background-color: #000813;
+    border-radius: 15px;
+    padding: 10px;
+    color: #ffffff;
+    border-color: #FFD60A;  
+    border-style: solid;
+    font-size: 18px;;
   } 
+
+  .rooms .rooms-choice {
+    color: #ffffff;
+    text-align: initial;
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
   
-  .message-box {
-      border-color: black;
-      border-width: 2px;
-      border-style: solid;
-      border-radius: 10px;
-      background-color: whitesmoke;
-      height: 80vh;
-      display: flex;
-      flex-direction: column;
-      width: 80vw;
-      align-items: stretch;
-    }
+  .error-message .error-message-sent {
+    font-size: 20px;
+    color: #ffffff;
+  }
+

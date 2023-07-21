@@ -4,29 +4,30 @@
 
 
 {% block content %}
-<form method="post">
-    <h3>Join the chat room</h3>
+<h1 class="welcome-head">WELCOME TO CHAT ROOM</h1>
+<form method="post" class="home-container">
     <div>
-        <input type="text" placeholder="Insert name" name="name" value="{{ request.args.get('name') or '' }}"/>
+        <input type="text" placeholder="INSERT ROOM NAME" name="name" value="{{ request.args.get('name') or '' }}" class="home-input"/>
     </div>
 
     <div class="join">
-        <input type="text" placeholder="Room code" name="room_code" value="{{room_code or '' }}"/>
+        <input type="text" placeholder="INSERT ROOM CODE" name="room_code" value="{{room_code or '' }}" class="home-input"/>
         <div class="join-buttons">
-            <button type="submit" name="join-room" class="joined">Join a room</button>
-            <button type="submit" name="create" class="joined" value="create">Create a room</button>
+            <button type="submit" name="join-room" class="joined">JOIN A ROOM</button>
+            <button type="submit" name="create" class="joined" value="create">CREATE A ROOM</button>
         </div>    
     </div>
     {% if error %}
-    <ul>
-        <li>{{error}}</li>
-    </ul>
+    <div class="error-message">
+        <h3 class="error-message-sent">{{error}}</li>
+    </div class="error-message">
     {% endif %} 
     <div class="rooms">
-        <button type="submit" name="java" class="join" value="General">General</button>
-        <button type="submit" name="openpy" class="join" value="Python">Python</button>
-        <button type="submit" name="devops" class="join" value="DevOps">DevOps</button>
-        <button type="submit" name="javascript" class="join" value="Java">Java</button>
+        <h3 class="rooms-choice">EXISTING ROOMS:</h3>
+        <button type="submit" name="openpy" class="join" value="Python">ROOM A</button>
+        <button type="submit" name="room2" class="join" value="room2">ROOM B</button>
+        <button type="submit" name="room3" class="join" value="room3">ROOM C</button>
+        <button type="submit" name="room4" class="join" value="room4">ROOM D</button>
     </div>
 </form>
 

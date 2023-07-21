@@ -52,9 +52,11 @@ async function load_messages() {
 window.onload = async function () {
   var msgs = await load_messages();
   for (i = 0; i < msgs.length; i++) {
+
     const name = msgs[i][0];  
     const message = msgs[i][1];
     const time = msgs[i][2];
+    
     createMessage(name, message, time);
   };
 };
@@ -64,12 +66,17 @@ const createMessage = (name, msg, time) => {
     
     const content = `
       <div class="text-message">
-          <span>
-              <strong>${name}</strong>: ${msg}
-          </span>
-          <span class="muted">
-              ${time}
-          </span>
+        <div class="name">
+          ${name}
+        </div>
+        <div class="message-time-container">
+          <div class="msg">
+            ${msg}
+          </div>
+          <div class="time">
+            ${time}
+          </div>
+        </div>
       </div>
       `;
     

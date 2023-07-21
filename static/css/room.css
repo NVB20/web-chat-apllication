@@ -1,5 +1,71 @@
 .message-box .messages {
-    overflow-y: scroll;
-    flex: 1;
-    width: 100%;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
 }
+
+.message-box {
+    width: 750px;
+    height: 600px;
+  }
+
+  .welcome-head {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 38px;
+  }
+
+  .room-name {
+    color: #fff;
+  }
+
+  .text-message {
+    display: flex;
+    padding: 10px;
+  }
+
+  .text-message .name {
+    color: #000000;
+    background-color: #FFD60A;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    width: 10%;
+    text-align-last: center;
+  }
+
+  .message-time-container {
+    display: flex;
+    background-color: #010713;
+    color: #fff;
+    padding: 10px;
+    border-radius: 15px;
+    margin-left: 10px;
+    width: 100%;
+    font-size: 20px;
+  }
+
+  .time {
+    margin-left: auto;
+  }
+
+  .inputs {
+    text-align-last: center;
+  }
+
+  #user_message {
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 15px;
+    border-style: none;
+    background-color: #071C3B;
+  }
+
+  #send-btn {
+    background-color: #FFD60A;
+    padding: 10px;
+    border-style: none;
+    border-radius: 10px;
+    font-size: 20px;
+  }

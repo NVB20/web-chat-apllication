@@ -3,10 +3,9 @@
 {% block title %}Secret Room{% endblock %}
 
 {% block content %}
-<h1>{{name}}</h1>
-<div class="message-box">
-    <h2>Secret Chat Room: {{code}}</h2>
-    
+<h1 class="welcome-head">WELCOME TO CHAT ROOM</h1>
+<h2 class="room-name">Secret Room: {{code}}</h2>
+<div class="message-box">    
     <div class="messages" id="messages"></div>
     <div class="inputs">
       <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
