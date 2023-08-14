@@ -6,19 +6,19 @@
 <h1 class="welcome-head">WELCOME TO CHAT ROOM</h1>
 <h2 class="room-name">Secret Room: {{code}}</h2>
 <div class="message-box">    
-    <div class="messages" id="messages"></div>
-    <div class="inputs">
-      <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
-      <button type="button" name="send" id="send-btn" onClick="sendMessage()">
-        Send</button>
-    </div>
+  <div class="messages" id="messages"></div>
+</div>
+
+<form method="post" action="{{ url_for('views.home', name=name) }}">
+  <div class="inputs">
+    <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
+    <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
   </div>
-  <form method="post" action="{{ url_for('views.home', name=name) }}">
-    <button id="leave_room" name="leave_room">Leave Room</button>
-  </form>
+  <button id="leave_room" name="leave_room">Leave Room</button>
+</form>
 {% for msg in messages %}
 <script type="text/javascript">
-    createMessage("{{msg.name}}", "{{msg.message}}, {{msg.time}}");
+  createMessage("{{msg.name}}", "{{msg.message}}, {{msg.time}}");
 </script>
 {% endfor %}
 
