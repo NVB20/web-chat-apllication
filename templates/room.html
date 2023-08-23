@@ -9,12 +9,13 @@
   <div class="messages" id="messages"></div>
 </div>
 
-<form method="post" action="{{ url_for('views.home', name=name) }}">
+<form method="post" action="{{ url_for('views.home', name=name) }}" style="width: 550px;">
   <div class="inputs">
-    <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
-    <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
+      <button id="leave_room" name="leave_room">Leave</button>
+      <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
+      <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
   </div>
-  <button id="leave_room" name="leave_room">Leave Room</button>
+  
 </form>
 {% for msg in messages %}
 <script type="text/javascript">

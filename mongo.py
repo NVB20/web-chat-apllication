@@ -1,7 +1,6 @@
 from dotenv import load_dotenv, find_dotenv
 from pymongo import MongoClient
 from flask import jsonify
-import os
 import re
 
  

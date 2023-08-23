@@ -51,7 +51,6 @@
   }
 
   .inputs {
-    display: flex;
     text-align-last: center;
   }
 
@@ -72,5 +71,9 @@
   }
 
   #leave_room {
-    background-color: #000000;
+    background-color: #FFD60A;
+    padding: 10px;
+    border-style: none;
+    border-radius: 10px;
+    font-size: 20px;
   }

@@ -1,16 +1,9 @@
 from flask import Flask, session
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
-import os
 from room_manager import rooms, SCECRET_KEY
 from mongo import insert_messages_to_mongo, delete_collection, retrive_message_history
 from handle_time import time_now
-
-app = Flask(__name__, template_folder='../../frontend/templates')
-app.config["SECRET_KEY"] = SCECRET_KEY
-socketio = SocketIO(app)
-app.register_blueprint(view, url_prefix="")
-
 # Dictionary to track client disconnections
 disconnect_flags = {}
 
@@ -70,7 +63,3 @@ def disconnect():
     
     send({"name": name, "message": "has left the room", "time": time}, to=room, name=name)
     print(f"{name} has left the room {room} {time}")
-
-
-if __name__ == "__main__":
-    socketio.run(app=app, debug=True,host='localhost', port=5000)
