@@ -4,13 +4,13 @@ from flask import jsonify
 import os
 import re
 
-
-
+ 
 load_dotenv(find_dotenv())
 
-password = os.environ.get("MONGODB_PWD")
- 
-connection_string = f"mongodb+srv://nivb49:{password}@messages-cluster.rhcbhja.mongodb.net/"
+#password = os.environ.get("MONGODB_PWD")
+
+connection_string = "mongodb://127.0.0.1:27017/"  
+
 client = MongoClient(connection_string)
 
 dbs = client.list_database_names()

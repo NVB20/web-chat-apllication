@@ -8,7 +8,7 @@ from handle_time import time_now
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SCECRET_KEY
 socketio = SocketIO(app)
-app.register_blueprint(view, url_perfix="")
+app.register_blueprint(view, url_prefix="")
 
 # Dictionary to track client disconnections
 disconnect_flags = {}
