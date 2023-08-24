@@ -3,7 +3,7 @@ from flask import jsonify
 import re
 
 
-connection_string = "mongodb://127.0.0.1:27017/"  
+connection_string = "mongodb://172.17.0.2:27017/"  
 client = MongoClient(connection_string)
 
 dbs = client.list_database_names()
