@@ -1,5 +1,5 @@
 import re
-from flask import request, render_template
+from flask import request
 
 
 def validate_name():
