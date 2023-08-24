@@ -2,7 +2,7 @@ from flask import Flask, session
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
 from room_manager import rooms, SCECRET_KEY
-from mongo import insert_messages_to_mongo, delete_collection, retrive_message_history
+from mongo import insert_messages_to_mongo, delete_collection
 from handle_time import time_now
 
 app = Flask(__name__)

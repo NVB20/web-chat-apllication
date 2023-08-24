@@ -3,15 +3,13 @@ const message = document.getElementById("messages")
 
 
 socketio.on("message", (data) => {
-createMessage(data.name, data.message, data.time);
+  createMessage(data.name, data.message, data.time);
 });
 
 
 
 const input = document.getElementById("user_message");
 input.addEventListener("keydown", function(event) {
-  
-  console.log("got pressed!!")
   if (event.key === 'Enter') {
     event.preventDefault();
     sendMessage();
@@ -25,12 +23,6 @@ const sendMessage = () => {
   setTimeout(scrollChatToBottom, 100);
   message.value = "";
 };
-
-
-function scrollChatToBottom() {
-  var chatContainer = document.getElementById("messages");
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
 
 
 const leave_button = document.getElementById("leave_room");
@@ -84,4 +76,10 @@ const createMessage = (name, msg, time) => {
       `;
     
     message.innerHTML += content;
+    scrollChatToBottom();
 };
+
+function scrollChatToBottom() {
+  var chatContainer = document.getElementById("messages");
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
