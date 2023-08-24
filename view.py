@@ -7,7 +7,6 @@ from mongo import retrive_message_history
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
 
-
 @view.route("/", methods=['POST', 'GET'])
 def home():
     

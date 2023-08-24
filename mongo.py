@@ -23,9 +23,8 @@ print(collections)
 def insert_messages_to_mongo(message, room):
     insert_collection = f"{room}_room_messages"
     collection = message_db[insert_collection]
-    test_message = message
-    inserted_id = collection.insert_one(test_message).inserted_id
-    print(inserted_id)
+    collection.insert_one(message).inserted_id
+   
 
 
 def create_collection(room_code):

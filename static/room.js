@@ -7,21 +7,24 @@ createMessage(data.name, data.message, data.time);
 });
 
 
-const sendMessage = () => {
-    const message = document.getElementById("user_message")
-    if (message.value == "") return;
-    socketio.emit("message", {data: message.value})
-    setTimeout(scrollChatToBottom, 100);
-    message.value = "";
-};
-
 
 const input = document.getElementById("user_message");
 input.addEventListener("keydown", function(event) {
-  if (event.keyCode === 13) {
+  
+  console.log("got pressed!!")
+  if (event.key === 'Enter') {
+    event.preventDefault();
     sendMessage();
   }
 });
+
+const sendMessage = () => {
+  const message = document.getElementById("user_message")
+  if (message.value == "") return;
+  socketio.emit("message", {data: message.value})
+  setTimeout(scrollChatToBottom, 100);
+  message.value = "";
+};
 
 
 function scrollChatToBottom() {
@@ -32,7 +35,7 @@ function scrollChatToBottom() {
 
 const leave_button = document.getElementById("leave_room");
 leave_button.addEventListener("click", function() {
-  console.log("Button pressed!");
+  console.log("Leave pressed!");
   socketio.emit("disconnect")
 });
 
