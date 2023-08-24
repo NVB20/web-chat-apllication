@@ -32,7 +32,7 @@ def delete_collection(room_code):
     message_db[collection_name].drop()
 
 
-def retrive_message_history(room_code):
+def retrieve_message_history(room_code):
     collection_name = f"{room_code}_room_messages"
     cursor = message_db[collection_name].find()
     
