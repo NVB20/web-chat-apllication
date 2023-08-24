@@ -4,6 +4,8 @@ from view import view
 from room_manager import rooms, SCECRET_KEY
 from mongo import insert_messages_to_mongo, delete_collection
 from handle_time import time_now
+import os
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SCECRET_KEY
@@ -72,4 +74,5 @@ def disconnect():
 
 
 if __name__ == "__main__":
-    socketio.run(app=app, debug=True,host='localhost', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    socketio.run(app=app, debug=True,host='0.0.0.0', port=port)
