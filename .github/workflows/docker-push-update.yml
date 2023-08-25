@@ -6,7 +6,7 @@ on:
       - .dockerignore
       - Dockerfile
 jobs:
-    cond-job:
+    push-docker-image:
         runs-on: ubuntu-latest   
         steps:
             - name: start proccess
