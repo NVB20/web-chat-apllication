@@ -12,7 +12,7 @@ jobs:
             - name: start proccess
               run: | 
                 echo "there was a changed detected in .dockerignore or Dockerfile"
-                echo "updating docker image in dockerhub repo: nvb20/chat-app" 
+                echo "updating docker image in dockerhub repo: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
             
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2

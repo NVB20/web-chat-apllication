@@ -2,7 +2,6 @@ from flask import Flask, session
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
 from room_manager import rooms, SCECRET_KEY
-from mongo import insert_messages_to_mongo, delete_collection
 from handle_time import time_now
 import os
 
@@ -15,7 +14,7 @@ app.register_blueprint(view, url_prefix="")
 # Dictionary to track client disconnections
 disconnect_flags = {}
 
-
+from mongo import insert_messages_to_mongo, delete_collection
 @socketio.on("message")
 def message(data):
     room = session.get("room")
@@ -75,4 +74,4 @@ def disconnect():
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    socketio.run(app=app, debug=True,host='0.0.0.0', port=port)
+    socketio.run(app=app, debug=True,host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)

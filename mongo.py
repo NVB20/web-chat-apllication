@@ -1,9 +1,11 @@
 from pymongo import MongoClient
 from flask import jsonify
 import re
+from get_mongo_address import get_db_ip_address
 
+IP_ADDRESS = get_db_ip_address('mongodb-service', 'staging')
 
-connection_string = "mongodb://172.17.0.2:27017/"  
+connection_string = f"mongodb://{IP_ADDRESS}/"  
 client = MongoClient(connection_string)
 
 dbs = client.list_database_names()
