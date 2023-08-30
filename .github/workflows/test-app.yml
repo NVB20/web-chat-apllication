@@ -2,7 +2,7 @@ name: test application
 run-name: testing-by-${{ github.actor }}
 on:
   push:
-    paths:
+    branches:
       - main
 jobs:
   test-application:
