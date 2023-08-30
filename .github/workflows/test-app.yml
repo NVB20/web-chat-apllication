@@ -25,3 +25,6 @@ jobs:
         run: |
           cd test
           python -m unittest discover test -p "*_test.py"
+
+    outputs:
+      workflow-completed: ${{ steps.build.outputs.workflow-completed }}      
