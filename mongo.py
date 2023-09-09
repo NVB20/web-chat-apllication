@@ -3,7 +3,7 @@ from flask import jsonify
 import re
 from get_mongo_address import get_db_ip_address
 
-IP_ADDRESS = get_db_ip_address('mongodb-service', 'staging')
+IP_ADDRESS = get_db_ip_address('mongodb-service', 'default')
 
 connection_string = f"mongodb://{IP_ADDRESS}/"  
 client = MongoClient(connection_string)
