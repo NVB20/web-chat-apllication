@@ -18,6 +18,8 @@ jobs:
     - name: Get Commit Message
       id: get_commit_message
       run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+    
+    
 
     - name: clone CD repo
       uses: actions/checkout@v3

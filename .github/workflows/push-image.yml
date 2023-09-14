@@ -15,7 +15,7 @@ jobs:
                 
             - name: Get Commit Message
               id: commit_message
-              run: echo "::set-output name=message::$(git log -1 --pretty=%B)
+              run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
             
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
