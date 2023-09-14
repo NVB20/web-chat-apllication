@@ -1,0 +1,37 @@
+name: Update image value
+
+on:
+  workflow_run:
+    workflows: ["upload docker image"]
+    types:
+      - completed
+      
+jobs:
+  pull-repo:
+    runs-on: ubuntu-latest 
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+      
+    - name: Get Commit Message
+      id: get_commit_message
+      run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+
+    - name: clone CD repo
+      uses: actions/checkout@v3
+      with:
+        repository: nvb20/chatroom-k8s-charts
+        path: helm-repo
+        ref: feature #branch to clone from in the cloned repo
+        token: ${{ secrets.GIT_TOKEN }}
+    
+    - name: Commit and Push files
+      run: |
+        cd helm-repo/ && ./image-tag.sh ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ steps.get_commit_message.outputs.message }}
+        git config --global user.email "nivb49@gmail.com"
+        git config --global user.name "NVB20"
+        git add .
+        git commit -m "updated chat-app image"
+        git push origin feature

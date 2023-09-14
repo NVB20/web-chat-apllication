@@ -2,7 +2,7 @@ name: upload docker image
 run-name: new-docker-image-by-${{ github.actor }}
 on:
   workflow_run:
-    workflows: ["test application"]
+    workflows: ["Test Application"]
     types:
       - completed
 jobs:
@@ -11,8 +11,11 @@ jobs:
         steps:
             - name: start proccess
               run: | 
-                echo "there was a changed detected in .dockerignore or Dockerfile"
                 echo "updating docker image in dockerhub repo: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
+                
+            - name: Get Commit Message
+              id: commit_message
+              run: echo "::set-output name=message::$(git log -1 --pretty=%B)
             
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
@@ -30,4 +33,4 @@ jobs:
               uses: docker/build-push-action@v4
               with:
                 push: true
-                tags:  ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ github.sha }}
+                tags:  ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ steps.commit_message.outputs.message }}
