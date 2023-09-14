@@ -24,7 +24,7 @@ jobs:
       with:
         repository: nvb20/chatroom-k8s-charts
         path: helm-repo
-        ref: feature #branch to clone from in the cloned repo
+        ref: main #branch to clone from in the cloned repo
         token: ${{ secrets.GIT_TOKEN }}
     
     - name: Commit and Push files
@@ -34,4 +34,4 @@ jobs:
         git config --global user.name "NVB20"
         git add .
         git commit -m "updated chat-app image"
-        git push origin feature
+        git push origin main
