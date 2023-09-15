@@ -1,4 +1,5 @@
 name: upload docker image
+
 on:
   workflow_run:
     workflows: ["Test Application"]
@@ -7,11 +8,14 @@ on:
 
 jobs:
   push-docker-image:
-    runs-on: ubuntu-latest   
+    runs-on: ubuntu-latest  
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
+
       - name: start process
         run: | 
-          echo "updating docker image in dockerhub repo: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
+          echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
       
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -44,3 +48,9 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ steps.commit_message_underscore.outputs.message_underscore }}
+          
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow "Test Application" failed. Unable to push the Docker image to Docker Hub.'
