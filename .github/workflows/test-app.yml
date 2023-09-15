@@ -24,10 +24,11 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r test_requirements.txt
+          pip instafll -r requirements.txt
+          pip instalfl -r test_requirements.txt
 
       - name: Run Unit Tests
         run: |
           cd test
           python -m unittest discover test -p "*_test.py"
+        continue-on-error: false
