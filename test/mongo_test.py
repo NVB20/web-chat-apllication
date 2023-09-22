@@ -7,7 +7,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from mongo import insert_messages_to_mongo, delete_collection
+from mongo.mongo import insert_messages_to_mongo, delete_collection
 
 class TestMongoFunctions(unittest.TestCase):
     @mock.patch('pymongo.MongoClient', MockMongoClient)

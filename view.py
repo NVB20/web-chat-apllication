@@ -1,13 +1,15 @@
 from flask import Blueprint, session, request, redirect, url_for, render_template 
 from input_checks.check_name import validate_name
 from input_checks.chosen_room import handle_create, handle_openpy
+from input_checks.valid_login_inputs import is_valid_email, check_password, check_user_exists
+from mongo.sign import register_user, user_login
 from room_manager import rooms
-from mongo import retrieve_message_history
+from mongo.mongo import retrieve_message_history
 
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="templates")
 
-@view.route("/", methods=['POST', 'GET'])
+@view.route("/home", methods=['POST', 'GET'])
 def home():
     
     session.clear()
@@ -64,3 +66,41 @@ def python_room():
 def get_messages():
     all_messages = retrieve_message_history(session["room"])
     return all_messages
+
+@view.route("/")
+@view.route("/login", methods=['POST', 'GET'])
+def login():
+
+    session.clear()
+
+    if request.method == "POST":
+        
+        if request.form.get("register"):
+            email = request.form.get("email")
+            password = request.form.get("password")
+            print("clicked register")
+
+        
+            
+            if is_valid_email(email) is not None:
+                error = is_valid_email(email)
+                return render_template("login.html", error=error)
+            if check_password(password) is not None:
+                error = check_password(password)
+                return render_template("login.html", error=error)
+            if check_user_exists(email) is True:
+                error = "user already exists"
+                return render_template("login.html", error=error)
+
+            register_user()
+            return redirect( url_for("views.home"))
+
+        if request.form.get("login"):    
+
+            if user_login() is False:
+                error = "User doesn't exist or incorrect password"
+                return render_template("login.html", error=error)
+        
+            return redirect( url_for("views.home"))
+
+    return render_template("login.html")

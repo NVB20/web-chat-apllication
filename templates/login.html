@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+<h1 class="welcome-head">WELCOME TO CHAT ROOM</h1>
+<form method="post" class="home-container">
+     
+    <form method="post" action="/login">
+        <div style="padding-top: 15%;">
+        <input type="text" placeholder="INSERT EMAIL" name="email" class="login-input"/>
+        </div>
+        <div>
+        <input type="password" placeholder="CREATE PASSWORD" name="password" class="login-input"/>
+        </div>
+        <div>
+        <input type="submit" value="Register" name="register" class="login-button">
+        <input type="submit" value="Login" name="login" class="login-button">
+        </div>  
+    </form>
+           
+    
+    {% if error %}
+    <div class="error-message">
+        <h3 class="error-message-sent">{{error}}</li>
+    </div class="error-message">
+    {% endif %} 
+</form>
+
+
+{% endblock %}

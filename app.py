@@ -14,7 +14,7 @@ app.register_blueprint(view, url_prefix="")
 # Dictionary to track client disconnections
 disconnect_flags = {}
 
-from mongo import insert_messages_to_mongo, delete_collection
+from mongo.mongo import insert_messages_to_mongo, delete_collection
 @socketio.on("message")
 def message(data):
     room = session.get("room")
