@@ -1,18 +1,6 @@
 from flask import request
-from pymongo import MongoClient
-from mongo.get_mongo_address import get_db_ip_address
 import re
 
-#IP_ADDRESS = get_db_ip_address('mongodb-service', 'default')
-
-connection_string = f"mongodb://172.17.0.2/"  
-client = MongoClient(connection_string)
-users_db = client.users
-
-
-def check_user_exists(email):
-    user = users_db["users"].find_one({"email": email})
-    return user is not None
 
 def is_valid_email(email):
     email = request.form.get("email")
