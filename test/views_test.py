@@ -6,7 +6,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from view import view
-from room_manager import SCECRET_KEY
+from handle.room_manager import SCECRET_KEY
 
 class TestViews(TestCase):
     def create_app(self):

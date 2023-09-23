@@ -1,9 +1,10 @@
 from flask import Blueprint, session, request, redirect, url_for, render_template 
 from input_checks.check_name import validate_name
-from input_checks.chosen_room import handle_create, handle_openpy
+from handle.chosen_room import handle_create, create_custom_room
+from handle.manage_code import room_code_regex
 from input_checks.valid_login_inputs import is_valid_email, check_password, check_user_exists
 from mongo.sign import register_user, user_login
-from room_manager import rooms
+from handle.room_manager import rooms
 from mongo.mongo import retrieve_message_history
 
 
@@ -15,6 +16,7 @@ def home():
     session.clear()
     
     if request.method == "POST":
+        
         name = request.form.get("name")
         room_code = request.form.get("room_code")
               
@@ -22,14 +24,20 @@ def home():
         if error:
             return render_template("home.html", error=error, name=name, room_code=room_code)
 
-        room = room_code  
-              
-        if request.form.get("openpy"):
-            return redirect(url_for(handle_openpy() ))       
+        room = room_code    
    
         if request.form.get("create"):
             return redirect(url_for(handle_create()))
-
+        
+        if request.form.get("roomA"):
+            return redirect(url_for(create_custom_room('roomA')))
+        elif request.form.get("roomB"):
+            return redirect(url_for(create_custom_room('roomB')))
+        elif request.form.get("roomC"):
+            return redirect(url_for(create_custom_room('roomC')))
+        elif request.form.get("roomD"):
+            return redirect(url_for(create_custom_room('roomD')))
+        
         if room_code and room_code not in rooms:
             return render_template("home.html", error="Room does not exist", name=name, room_code=room_code)  
                       
@@ -52,14 +60,16 @@ def room():
     return render_template("room.html", code=room, messages=rooms[room]["messages"], name=name)
 
 
-@view.route("/python_room")
-def python_room():
+@view.route("/custom_room")
+def custom_room():
     name = session.get("name")
     room = session.get("room")
     if room is None or name is None or room not in rooms:
         return redirect(url_for("views.home"))
+    
+    type = room_code_regex(room)
 
-    return render_template("python-room.html", code=room, messages=rooms[room]["messages"],  room_type="Python", name=name)
+    return render_template("custom-room.html", code=type, messages=rooms[room]["messages"], name=name)
 
 
 @view.route("/get_messages")
@@ -67,7 +77,7 @@ def get_messages():
     all_messages = retrieve_message_history(session["room"])
     return all_messages
 
-@view.route("/")
+@view.route("/", methods=['POST', 'GET'])
 @view.route("/login", methods=['POST', 'GET'])
 def login():
 

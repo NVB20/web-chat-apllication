@@ -3,9 +3,9 @@ from flask import jsonify
 import re
 from mongo.get_mongo_address import get_db_ip_address
 
-IP_ADDRESS = get_db_ip_address('mongodb-service', 'default')
+#IP_ADDRESS = get_db_ip_address('mongodb-service', 'default')
 
-connection_string = f"mongodb://{IP_ADDRESS}/"  
+connection_string = f"mongodb://172.17.0.2/"  
 client = MongoClient(connection_string)
 
 dbs = client.list_database_names()
@@ -23,7 +23,8 @@ def insert_messages_to_mongo(message, room):
 
 def create_collection(room_code):
     collection_name = f"{room_code}_room_messages"
-    message_db.create_collection(collection_name)
+    if collection_name not in message_db.list_collection_names():
+        message_db.create_collection(collection_name)
     
 
 def delete_collection(room_code):

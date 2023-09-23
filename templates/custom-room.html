@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Room{% endblock %}
+
+{% block content %}
+<h1 class="welcome-head">WELCOME TO CHAT ROOM</h1>
+<h2 class="room-name">{{code}}</h2>
+<div class="message-box">    
+  <div class="messages" id="messages"></div>
+</div>
+
+<form method="post" action="{{ url_for('views.home', name=name) }}" style="width: 550px;margin-top: 10px;">
+  <div class="inputs">
+      <button id="leave_room" name="leave_room">Leave</button>
+      <input type="text" rows="3" placeholder="Message" name="message" id="user_message"/>
+      <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
+  </div>
+</form>
+
+{% for msg in messages %}
+<script type="text/javascript">
+  createMessage("{{msg.name}}", "{{msg.message}}, {{msg.time}}");
+</script>
+{% endfor %}
+
+
+{% endblock %}

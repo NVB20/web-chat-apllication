@@ -24,10 +24,16 @@
     {% endif %} 
     <div class="rooms">
         <h3 class="rooms-choice">EXISTING ROOMS:</h3>
-        <button type="submit" name="openpy" class="join" value="Python">ROOM A</button>
-        <button type="submit" name="room2" class="join" value="room2">ROOM B</button>
-        <button type="submit" name="room3" class="join" value="room3">ROOM C</button>
-        <button type="submit" name="room4" class="join" value="room4">ROOM D</button>
+        <form method="post" action="/home">
+            <div>
+            <input type="submit" value="Room A" name="roomA" class="login-button">
+            <input type="submit" value="Room B" name="roomB" class="login-button">
+            </div>
+            <div>
+            <input type="submit" value="Room C" name="roomC" class="login-button">
+            <input type="submit" value="Room D" name="roomD" class="login-button">
+            </div>
+        </form>
     </div>
 </form>
 

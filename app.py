@@ -1,8 +1,8 @@
 from flask import Flask, session
 from flask_socketio import SocketIO, join_room, send, leave_room  
 from view import view
-from room_manager import rooms, SCECRET_KEY
-from handle_time import time_now
+from handle.room_manager import rooms, SCECRET_KEY
+from handle.handle_time import time_now
 import os
 
 

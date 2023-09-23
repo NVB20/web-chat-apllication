@@ -3,7 +3,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from room_manager import generate_room_code, rooms, ROOM_CODE_LENGTH
+from handle.room_manager import generate_room_code, rooms, ROOM_CODE_LENGTH
 
 
 class TestGenerateRoomCode(unittest.TestCase):
