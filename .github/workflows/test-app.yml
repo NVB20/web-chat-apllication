@@ -32,3 +32,10 @@ jobs:
           cd test
           python -m unittest discover test -p "*_test.py"
         continue-on-error: false
+
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project tests has been succesfull.'
