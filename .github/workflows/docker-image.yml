@@ -29,7 +29,7 @@ jobs:
         with:
           args: 'The project tests has been succesfull.'
 
-  push-docker-image:
+  docker-image:
     runs-on: ubuntu-latest  
     needs: merge-main
     steps:
@@ -54,7 +54,8 @@ jobs:
         id: commit_message_underscore
         run: |
           commit_message=$(git log -1 --pretty=%B)  # Get the commit message
-          commit_message_underscore=$(echo "$commit_message" | sed 's/ /_/g')  # Replace spaces with underscores
+          cleaned_tag=$(echo "$commit_message" | tr -cd '[:alnum:]-_')  # Remove invalid characters
+          commit_message_underscore=$(echo "$cleaned_tag" | sed 's/ /_/g')  # Replace spaces with underscores
           echo "::set-output name=message_underscore::$commit_message_underscore"  # Set the output variable
 
       - name: Login to Docker Hub
@@ -79,7 +80,7 @@ jobs:
 
   update-deployment-tag:
     runs-on: ubuntu-latest
-    needs: push-docker-image
+    needs: docker-image
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
