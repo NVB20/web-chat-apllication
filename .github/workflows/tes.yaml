@@ -11,16 +11,12 @@ jobs:
     runs-on: ubuntu-latest  
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Notify Success  
+        run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
+
       - name: start process
         run: | 
           echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
-      
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: "The project tests has been succesfull"
       
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -53,13 +49,7 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ steps.commit_message_underscore.outputs.message_underscore }}
-      
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: "A new Docker image is now available on Docker Hub. https://hub.docker.com/repository/docker/nvb20/chat-app/general"
+
 
   update-deployment-tag:
     runs-on: ubuntu-latest
@@ -108,4 +98,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "The project's tests have failed, resulting in the failure to generate a new image."
+          args: "The project's tests have failed, resulting in the failure to generate a new image. Additionally, the merge request has been denied"
