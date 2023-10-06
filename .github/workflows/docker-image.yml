@@ -34,7 +34,9 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'Merged branch to main'
+          args: |
+            commit_message=$(git log -1 --pretty=%B)  # Get the commit message
+            'Merged branch to main, commit message $commit_message'
       
 
   docker-image:
