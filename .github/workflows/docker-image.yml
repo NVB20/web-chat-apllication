@@ -62,7 +62,7 @@ jobs:
         id: commit_message_underscore
         run: |
           commit_message=$(git log -1 --pretty=%B)  # Get the commit message
-          cleaned_tag=$(echo "$commit_message" | tr -cd '[:alnum:]-_')  # Remove invalid characters
+          cleaned_tag=$(echo "$commit_message" | sed 's/[^a-zA-Z0-9_]/_/g')  # Remove invalid characters
           commit_message_underscore=$(echo "$cleaned_tag" | sed 's/ /_/g')  # Replace spaces with underscores
           echo "::set-output name=message_underscore::$commit_message_underscore"  # Set the output variable
 
