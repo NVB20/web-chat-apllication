@@ -13,7 +13,14 @@ jobs:
     steps:
       - name: Notify Success  
         run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
-      
+     
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project tests has been succesfull.'
+        
       - name: Merge to main
         uses: devmasx/merge-branch@master
         with:
@@ -27,7 +34,8 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The project tests has been succesfull.'
+          args: 'Merged branch to main'
+      
 
   docker-image:
     runs-on: ubuntu-latest  
