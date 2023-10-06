@@ -6,28 +6,14 @@ on:
     types:
       - completed
 
-jobs:
-  merge-main:
-    runs-on: ubuntu-latest  
+jobs: 
+  docker-image:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest  
     steps:
-      - name: Notify Success  
-        run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
-     
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The project tests has been succesfull.'
-        
-      - name: Merge to main
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: feature
-          target_branch: main
-          github_token: ${{ secrets.GIT_TOKEN }}
+      - name: start process
+        run: | 
+          echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
       
       - name: Discord notification
         env:
@@ -35,17 +21,8 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            commit_message=$(git log -1 --pretty=%B)  # Get the commit message
-            'Merged branch to main, commit message $commit_message'
-      
-
-  docker-image:
-    runs-on: ubuntu-latest  
-    needs: merge-main
-    steps:
-      - name: start process
-        run: | 
-          echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
+            'The project tests has been succesfull.'
+            'Starting to build a new docker image'
       
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -129,6 +106,24 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: 'The Helm chart has been updated with the new image'
+      
+  merge-main:
+    runs-on: ubuntu-latest  
+    steps:                           
+      - name: Merge to main
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: feature
+          target_branch: main
+          github_token: ${{ secrets.GIT_TOKEN }}
+              
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Merged branch to main'
           
           
   on-failure:
