@@ -5,11 +5,7 @@ on:
       - main
       - master
       - feature
-  pull_request:
-    branches:
-      - main
-      - master
-    
+
 
 jobs:
   test-application:
@@ -24,7 +20,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'A merge request has been initiated, starting tests on new code'
+          args: 'A new push to a feature branch has been made, starting tests on new code'
       
       - name: Set up Python environment
         uses: actions/setup-python@v2
