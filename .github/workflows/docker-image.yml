@@ -1,0 +1,17 @@
+name: upload docker image
+
+on:
+  workflow_run:
+    workflows: ["Test Application"]
+    types:
+      - completed
+
+jobs:
+  merge-main:
+    runs-on: ubuntu-latest  
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Notify Success  
+        run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
+      
+     
