@@ -1,10 +1,14 @@
 name: upload docker image
 
+# on:
+#   workflow_run:
+#     workflows: ["Test Application"]
+#     types:
+#       - completed
 on:
-  workflow_run:
-    workflows: ["Test Application"]
-    types:
-      - completed
+  push:
+    branches:
+      - feature
 
 jobs:
   create-docker-image:
