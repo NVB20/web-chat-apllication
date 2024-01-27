@@ -4,7 +4,6 @@ on:
     branches:
       - feature
 
-
 jobs:
   test-application:
     runs-on: ubuntu-latest
@@ -12,13 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'A new push to a feature branch has been made, starting tests on new code'
       
       - name: Set up Python environment
         uses: actions/setup-python@v2
@@ -30,11 +22,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r test_requirements.txt
-
+      
       - name: Run Unit Tests
         run: |
           cd test
           python -m unittest discover test -p "*_test.py"
         continue-on-error: false
-
-      
