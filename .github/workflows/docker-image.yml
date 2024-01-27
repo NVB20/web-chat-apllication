@@ -12,6 +12,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Notify Success  
-        run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
+        run: echo 'The last workflow123 "Test Application" passed successfully. Starting to push the image to Docker Hub.'
       
      
