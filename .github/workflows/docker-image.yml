@@ -6,7 +6,6 @@ on:
     types:
       - completed
 
-
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest 
