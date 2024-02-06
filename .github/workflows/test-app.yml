@@ -1,38 +1,43 @@
-# name: Test Application
+name: Test Application
 
-# on:
-#   push:
-#     branches:
-#       - feature
+on:
+  push:
+    branches:
+      - feature
 
-# jobs:
-#   test-application:
-#     runs-on: ubuntu-latest
+jobs:
+  test-application:
+    runs-on: ubuntu-latest
     
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
       
-#       - name: Set up Python environment
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: 3.10.12 
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.12 
 
-#       - name: Install Dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -r requirements.txt
-#           pip install -r test_requirements.txt
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r test_requirements.txt
       
-#       - name: Run Unit Tests
-#         run: |
-#           cd test
-#           python -m unittest discover test -p "*_test.py"
-#         continue-on-error: false
+      - name: Run Unit Tests
+        run: |
+          cd test
+          python -m unittest discover test -p "*_test.py"
+        continue-on-error: false
       
-#       - name: Discord notification
-#         env:
-#           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-#         uses: Ilshidur/action-discord@master
-#         with:
-#           args: 'The project tests has been succesfull.'
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project tests has been succesfull.'
+      
+      - name: Get Commit Message
+        id: get_commit_message
+        run: |
+          echo "::set-output name=message::$(git log -1 --pretty=%B)" >> commit_message.txt

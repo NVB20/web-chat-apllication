@@ -1,19 +1,16 @@
 name: upload docker image
 
-# on:
-#   workflow_run:
-#     workflows: ["Test Application"]
-#     types:
-#       - completed
 on:
-  push:
-    branches:
-      - feature
+  workflow_run:
+    workflows: ["Test Application"]
+    types:
+      - completed
+
 
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest 
-#    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
     steps:
       - name: start process
         run: | 
@@ -28,14 +25,10 @@ jobs:
       - name: Set up Docker 
         uses: docker/setup-buildx-action@v2
 
-      - name: Get Commit Message
-        id: commit_message
-        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
-      
       - name: Replace Spaces with Underscores
         id: commit_message_underscore
         run: |
-          commit_message=$(git log -1 --pretty=%B)  # Get the commit message
+          commit_message=$(< "commit_message.txt")  # Get the commit message
           cleaned_tag=$(echo "$commit_message" | tr -cd '[:alnum:]-_')  # Remove invalid characters
           commit_message_underscore=$(echo "$cleaned_tag" | sed 's/ /_/g')  # Replace spaces with underscores
           echo "::set-output name=message_underscore::$commit_message_underscore"  # Set the output variable    
@@ -90,9 +83,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get Commit Message
-        id: get_commit_message
-        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+      
 
       - name: Replace Spaces with Underscores
         id: commit_message_underscore
@@ -125,15 +116,15 @@ jobs:
           args: 'The Helm chart has been updated with the new image'
           
 
-  # on-failure:
-  #           runs-on: ubuntu-latest
-  #           if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-  #           steps:
-  #             - run: echo 'The triggering workflow "Test Application" failed. Unable to push the Docker image to Docker Hub.'
+  on-failure:
+            runs-on: ubuntu-latest
+            if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+            steps:
+              - run: echo 'The triggering workflow "Test Application" failed. Unable to push the Docker image to Docker Hub.'
             
-  #             - name: Discord notification
-  #               env:
-  #                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  #               uses: Ilshidur/action-discord@master
-  #               with:
-  #                 args: "The project's tests have failed, resulting in the failure to generate a new image. Additionally, the merge request has been denied"
+              - name: Discord notification
+                env:
+                  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                uses: Ilshidur/action-discord@master
+                with:
+                  args: "The project's tests have failed, resulting in the failure to generate a new image. Additionally, the merge request has been denied"
