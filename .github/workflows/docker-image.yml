@@ -97,15 +97,15 @@ jobs:
           args: 'The Helm chart has been updated with the new image'
           
 
-  on-failure:
-            runs-on: ubuntu-latest
-            if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-            steps:
-              - run: echo 'The triggering workflow "Test Application" failed. Unable to push the Docker image to Docker Hub.'
+  # on-failure:
+  #           runs-on: ubuntu-latest
+  #           if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+  #           steps:
+  #             - run: echo 'The triggering workflow "Test Application" failed. Unable to push the Docker image to Docker Hub.'
             
-              - name: Discord notification
-                env:
-                  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-                uses: Ilshidur/action-discord@master
-                with:
-                  args: "The project's tests have failed, resulting in the failure to generate a new image. Additionally, the merge request has been denied"
+  #             - name: Discord notification
+  #               env:
+  #                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #               uses: Ilshidur/action-discord@master
+  #               with:
+  #                 args: "The project's tests have failed, resulting in the failure to generate a new image. Additionally, the merge request has been denied"
