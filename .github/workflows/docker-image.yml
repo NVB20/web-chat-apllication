@@ -2,7 +2,7 @@ name: upload docker image
 
 on:
   workflow_run:
-    workflows: [Test Application]
+    workflows: [ Test Application]
     types:
       - completed
 
