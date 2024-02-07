@@ -2,10 +2,10 @@ name: upload docker image
 
 on:
   workflow_run:
-    workflows: [" Test Application"]
+    workflows: [Run Tests]
     types:
       - completed
-
+      
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest 
