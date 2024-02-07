@@ -2,7 +2,7 @@ name: upload docker image
 
 on:
   workflow_run:
-    workflows: ["Test Application"]
+    workflows: [Test Application]
     types:
       - completed
 
@@ -23,10 +23,6 @@ jobs:
 
       - name: Set up Docker 
         uses: docker/setup-buildx-action@v2
-
-      - name: Get Commit Message
-        id: commit_message
-        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
       
       - name: Replace Spaces with Underscores
         id: commit_message_underscore
