@@ -1,14 +1,11 @@
 name: create and upload docker image
 
-# on:
-#   workflow_run:
-#     workflows: [Run Tests]
-#     types:
-#       - completed
 on:
-  push:
-    branches:
-      - feature
+  workflow_run:
+    workflows: [Run Tests]
+    types:
+      - completed
+
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest 
