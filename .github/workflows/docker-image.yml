@@ -3,13 +3,13 @@ name: create and upload docker image
 on:
   workflow_run:
     workflows: [Run Tests]
-    types: [completed]
+    types: [requested]
     branches: [feature]
 
 jobs:
   create-docker-image:
     runs-on: ubuntu-latest 
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
     steps:
       - name: start process
         run: | 
