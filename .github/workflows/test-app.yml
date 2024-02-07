@@ -1,4 +1,4 @@
-name: Test Application
+name: CI flow
 on:
   push:
     branches:
