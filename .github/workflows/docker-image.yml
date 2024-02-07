@@ -3,8 +3,8 @@ name: create and upload docker image
 on:
   workflow_run:
     workflows: [Run Tests]
-    types: [requested]
-    branches: [feature]
+    types: [completed]
+ 
 
 jobs:
   create-docker-image:
