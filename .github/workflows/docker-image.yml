@@ -1,16 +1,15 @@
-name: create and upload docker image
+name: CI notify
 
+# Only trigger, when the build workflow succeeded
 on:
   workflow_run:
-    workflows: [Run Tests]
+    workflows: ["CI build"]
     types:
       - completed
 
 jobs:
-  create-docker-image:
-    runs-on: ubuntu-latest 
+  notify:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: start process
-        run: | 
-          echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
-      
+      - uses: actions/checkout@v2
