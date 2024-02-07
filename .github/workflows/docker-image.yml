@@ -24,14 +24,17 @@ jobs:
       - name: Set up Docker 
         uses: docker/setup-buildx-action@v2
 
+      - name: Get Commit Message
+        id: commit_message
+        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+      
       - name: Replace Spaces with Underscores
         id: commit_message_underscore
         run: |
-          commit_message=$(< "commit_message.txt")  # Get the commit message
+          commit_message=$(git log -1 --pretty=%B)  # Get the commit message
           cleaned_tag=$(echo "$commit_message" | tr -cd '[:alnum:]-_')  # Remove invalid characters
           commit_message_underscore=$(echo "$cleaned_tag" | sed 's/ /_/g')  # Replace spaces with underscores
-          echo "::set-output name=message_underscore::$commit_message_underscore"  # Set the output variable    
-          rm commit_message.txt
+          echo "::set-output name=message_underscore::$commit_message_underscore"  # Set the output variable
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -50,29 +53,6 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: 'A new Docker image is now available on Docker Hub. https://hub.docker.com/repository/docker/nvb20/chat-app/general'
-  
-  
-  merge-main:
-    runs-on: ubuntu-latest  
-    needs: create-docker-image
-    steps:
-      - name: Notify Success  
-        run: echo 'The last workflow "Test Application" passed successfully. Starting to push the image to Docker Hub.'
-            
-      - name: Merge to main
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: feature
-          target_branch: main
-          github_token: ${{ secrets.GIT_TOKEN }}
-      
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The project has merged into the main branch.'
 
 
   update-deployment-tag:
@@ -82,7 +62,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      
+      - name: Get Commit Message
+        id: get_commit_message
+        run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
 
       - name: Replace Spaces with Underscores
         id: commit_message_underscore
