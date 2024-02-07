@@ -1,0 +1,16 @@
+name: create and upload docker image
+
+on:
+  workflow_run:
+    workflows: [Run Tests]
+    types:
+      - completed
+
+jobs:
+  create-docker-image:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: start process
+        run: | 
+          echo "Updating the Docker image in Docker Hub repository: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app" 
+      
