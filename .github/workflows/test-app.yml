@@ -1,0 +1,14 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - feature
+
+jobs:
+  test-application:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
